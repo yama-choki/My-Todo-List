@@ -39,7 +39,7 @@
             やることを追加する
           </v-toolbar>
           <div class="mx-5">
-            <v-text-field label="やること" :rules="todoReles" class="mt-5" />
+            <v-text-field label="やること" class="mt-5" counter="10" />
             <v-text-field label="やることの説明" class="mt-5" counter="50" />
           </div>
           <v-card-actions class="justify-end">
@@ -95,9 +95,6 @@
 export default {
   data () {
     return {
-      todoReles: [
-        value => (value && value.length <= 10) || '10文字以内で入力してください'
-      ]
     }
   }
 }
