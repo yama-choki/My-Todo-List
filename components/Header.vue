@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-template-shadow */
 <template>
   <v-app-bar
     app
@@ -18,8 +19,9 @@
 
     <v-spacer />
     <v-dialog
-      transition="dialog-top-transition"
+      v-model="addTodoDialog"
       max-width="600"
+      persistent
     >
       <template #activator="{ on, attrs }">
         <v-btn
@@ -39,11 +41,17 @@
             やることを追加する
           </v-toolbar>
           <div class="mx-5">
-            <v-text-field label="やること" class="mt-5" counter="10" />
-            <v-text-field label="やることの説明" class="mt-5" counter="50" />
+            <v-text-field v-model="todo.title" label="やること" class="mt-5" counter="10" />
+            <v-text-field v-model="todo.text" label="やることの説明" class="mt-5" counter="50" />
+            <h3 class="my-5 limit-title">
+              期限を入力してください
+            </h3>
+            <v-row justify="center">
+              <v-date-picker v-model="todo.limit" />
+            </v-row>
           </div>
           <v-card-actions class="justify-end">
-            <v-btn text color="primary" @click="dialog.value = false">
+            <v-btn text color="primary" @click="addTodo()">
               追加する
             </v-btn>
             <v-btn text color="primary" @click="dialog.value = false">
@@ -54,7 +62,7 @@
       </template>
     </v-dialog>
     <v-dialog
-      transition="dialog-top-transition"
+      v-model="deleteTodoDialog"
       max-width="600"
     >
       <template #activator="{ on, attrs }">
@@ -95,11 +103,34 @@
 export default {
   data () {
     return {
+      addTodoDialog: false,
+      deleteTodoDialog: false,
+      todo: {
+        done: false,
+        title: '',
+        text: '',
+        limit: '',
+        created: ''
+      }
+    }
+  },
+  methods: {
+    addTodo () {
+      if (this.todo.title) {
+        this.$store.dispatch('addTodo', this.todo)
+        // this.todo.title = ''
+        // this.todo.text = ''
+        // this.todo.limit = ''
+        this.addTodoDialog = false
+      }
     }
   }
 }
 </script>
 
 <style>
-
+.limit-title{
+  display: flex;
+  justify-content: center;
+}
 </style>
